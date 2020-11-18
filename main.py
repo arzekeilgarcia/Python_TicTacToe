@@ -16,11 +16,11 @@ def gameboard(plays_made):
     Returns:
         None
     """
-    print('{}|{}|{}'.format(plays_made[0],plays_made[1],plays_made[2]))
-    print('-|-|-')
-    print('{}|{}|{}'.format(plays_made[3],plays_made[4],plays_made[5]))
-    print('-|-|-')
-    print('{}|{}|{}'.format(plays_made[6],plays_made[7],plays_made[8]))
+    print('{}|{}|{}'.format(plays_made[0][0],plays_made[1][0],plays_made[2][0]))
+    print('-+-+-')
+    print('{}|{}|{}'.format(plays_made[0][1],plays_made[1][1],plays_made[2][1]))
+    print('-+-+-')
+    print('{}|{}|{}'.format(plays_made[0][2],plays_made[1][2],plays_made[2][2]))
 
     return
 
@@ -42,9 +42,22 @@ def position_chosen(plays_made):
         counter
     """
     player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
-    while(player_choice > 9 and player_choice < 1 or plays_made[player_choice - 1] == 'X' or plays_made[player_choice - 1] == 'O'):
-        print('Error, You cannot place your counter there')
-        player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+    while(player_choice > 9 and player_choice < 1):
+        for i in range(len(plays_made)):
+            for j in range(len(plays_made)):
+                if(player_choice <= 3 and player_choice >= 1):
+                    if(plays_made[0][player_choice - 1] == 'X' or plays_made[0][player_choice - 1] == 'O'):
+                        print('Error, You cannot place your counter there')
+                        player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+                elif(player_choice <= 6 and player_choice >= 4):
+                    if(plays_made[1][player_choice - 1] == 'X' or plays_made[1][player_choice - 1] == 'O'):
+                        print('Error, You cannot place your counter there')
+                        player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+                elif(player_choice <= 9 and player_choice >= 7):
+                    if(plays_made[2][player_choice - 1] == 'X' or plays_made[2][player_choice - 1] == 'O'):
+                        print('Error, You cannot place your counter there')
+                        player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+        
 
     return player_choice
 
@@ -69,21 +82,114 @@ def update_board(plays_made, player_choice,which_player):
         of where players' counters are already placed and 
         where they aren't
     """
+    if(which_player % 2) != 0:
+        if(player_choice <= 3 and player_choice >= 1):
+            plays_made[player_choice - 1][0] = 'X'
+        elif(player_choice <= 6 and player_choice >= 4):
+            plays_made[player_choice - 4][1] = 'X'
+        elif(player_choice <= 9 and player_choice >= 7):
+            plays_made[player_choice - 7][2] = 'X'
+                        
+    else:
+        if(player_choice <= 3 and player_choice >= 1):
+            plays_made[player_choice - 1][0] = 'O'
+        elif(player_choice <= 6 and player_choice >= 4):
+            plays_made[player_choice - 4][1] = 'O'
+        elif(player_choice <= 9 and player_choice >= 7):
+            plays_made[player_choice - 7][2] = 'O'
+    #reprints the game board
+    gameboard(plays_made)
 
+    return plays_made
 
-    return
+def checking_full(plays_made):
+    """
+    Purpose:
+        checks to see if the game board is full with X's 
+        or O's
+    Use:
+        is_full = checking_full(plays_made)
+    -----------------------------------------------------
+    Parameters:
+        plays_made - the list that holds the information 
+        of where players' counters are already placed and 
+        where they aren't
+    Returns:
+        is_full - a True or False statement that tells the
+        game if the game board is full or not
+    """
+    
+    counter = 0
+    for i in range(len(plays_made)):
+        for j in range(len(plays_made)):
+            if(plays_made[i][j] == 'X' or plays_made[i][j] == 'O'):
+                counter += 1
+    #from the start of the game, the game board isn't filled so that's why is_full is starting at False 
+    is_full = False
+    if(counter == 9):
+        is_full = True
+
+    return is_full
+
+def game_condition(plays_made, counter):
+    """
+    Purpose:
+        checks to see if anyone has won the game or not
+    Use:
+        game_condition()
+    -----------------------------------------------------
+    Parameters:
+        plays_made - the list that holds the information 
+        of where players' counters are already placed and 
+        where they aren't
+        counter - the player's counter 
+    Returns:
+        is_won - a True or False statement that tells the
+        game if someone has won or not
+    """
+    is_won = False
+    for i in range(len(plays_made)):
+        for j in range(len(plays_made)):
+            if(plays_made[0][j] == counter and plays_made[1][j] == counter and plays_made[2][j] == counter):
+                is_won = True
+            elif(plays_made[i][0] == counter and plays_made[i][1] == counter and plays_made[i][2] == counter):
+                is_won = True
+            elif(plays_made[0][0] == counter and plays_made[1][1] == counter and plays_made[2][2] == counter):
+                is_won = True
+            elif(plays_made[2][0] == counter and plays_made[1][1] == counter and plays_made[0][2] == counter):
+                is_won = True
+    return is_won
 
 def main():
     #plays_made starts with values 1-9 as a way to show what's the original position of each box  
-    plays_made = [1,2,3,4,5,6,7,8,9]
+    plays_made = [[1,4,7],[2,5,8],[3,6,9]]
     #prints the game board once for now
     gameboard(plays_made)
-
-    player_choice = position_chosen()
-    update_board(player_choice)
-    #call win condition function 
-    #while loop to keep game running or not
-
+    which_player = 1
+    is_won = False
+    while(is_won != True):
+        if(which_player % 2) != 0:
+            counter = 'X'
+        else:
+            counter = 'O'
+        player_choice = position_chosen(plays_made)
+        update_board(plays_made, player_choice,which_player)
+        is_won = game_condition(plays_made, counter)
+        if(is_won == True):
+            if(counter == 'X'):
+                print('Player One Won')
+                break
+            else:
+                print('Player Two Won')
+                break
+        is_full = checking_full(plays_made)
+        if(is_full == True):
+            print('It is a Cat Game, No One Won')
+            break
+        which_player += 1
+    play_again = input('Would you like to play again? (y/n): ')
+    if(play_again.lower() == 'y' or play_again.lower() == 'yes'):
+        main()
 
 #calls the main method
 main()
