@@ -158,7 +158,28 @@ def game_condition(plays_made, counter):
                 is_won = True
             elif(plays_made[2][0] == counter and plays_made[1][1] == counter and plays_made[0][2] == counter):
                 is_won = True
+
     return is_won
+    
+
+def play_again():
+    """
+    Purpose:
+        It is a simple function that asks the user if they
+        want to play again
+    Use:
+        play_again()
+    -----------------------------------------------------
+    Parameters:
+        None
+    Returns:
+        None
+    """
+    play_again = input('Would you like to play again? (y/n): ')
+    if(play_again.lower() == 'y' or play_again.lower() == 'yes'):
+        main()
+
+    return
 
 def main():
     #plays_made starts with values 1-9 as a way to show what's the original position of each box  
@@ -175,21 +196,20 @@ def main():
         player_choice = position_chosen(plays_made)
         update_board(plays_made, player_choice,which_player)
         is_won = game_condition(plays_made, counter)
-        if(is_won == True):
+        if(is_won):
             if(counter == 'X'):
                 print('Player One Won')
-                break
             else:
                 print('Player Two Won')
-                break
+
         is_full = checking_full(plays_made)
-        if(is_full == True):
+        if(is_full):
             print('It is a Cat Game, No One Won')
-            break
+
         which_player += 1
-    play_again = input('Would you like to play again? (y/n): ')
-    if(play_again.lower() == 'y' or play_again.lower() == 'yes'):
-        main()
+        
+    #asks the user if they want to play again    
+    play_again()
 
 #calls the main method
 main()
