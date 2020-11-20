@@ -42,22 +42,33 @@ def position_chosen(plays_made):
         counter
     """
     player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
-    while(player_choice > 9 and player_choice < 1):
-        for i in range(len(plays_made)):
-            for j in range(len(plays_made)):
-                if(player_choice <= 3 and player_choice >= 1):
-                    if(plays_made[0][player_choice - 1] == 'X' or plays_made[0][player_choice - 1] == 'O'):
-                        print('Error, You cannot place your counter there')
-                        player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
-                elif(player_choice <= 6 and player_choice >= 4):
-                    if(plays_made[1][player_choice - 1] == 'X' or plays_made[1][player_choice - 1] == 'O'):
-                        print('Error, You cannot place your counter there')
-                        player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
-                elif(player_choice <= 9 and player_choice >= 7):
-                    if(plays_made[2][player_choice - 1] == 'X' or plays_made[2][player_choice - 1] == 'O'):
-                        print('Error, You cannot place your counter there')
-                        player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
-        
+    while (True):
+        if(player_choice > 9 and player_choice < 1):
+            print('Error, You cannot place your counter there')
+            player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+        else:
+            if(player_choice <= 3 and player_choice >= 1):
+                if(plays_made[player_choice - 1][0] == 'X' or plays_made[player_choice - 1][0] == 'O'):
+                    print('Error, You cannot place your counter there')
+                    player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+                else:
+                    break
+            elif(player_choice <= 6 and player_choice >= 4):
+                if(plays_made[player_choice - 4][1] == 'X' or plays_made[player_choice - 4][1] == 'O'):
+                    print('Error, You cannot place your counter there')
+                    player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+                else:
+                    break
+            elif(player_choice <= 9 and player_choice >= 7):
+                if(plays_made[player_choice - 7][2] == 'X' or plays_made[player_choice - 7][2] == 'O'):
+                    print('Error, You cannot place your counter there')
+                    player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+                else:
+                    break
+            else:
+                print('Error, You cannot place your counter there')
+                player_choice = int(input('Enter where you want to place your counter corresponding to the avaliable spaces on the Game Board (1-9): '))
+
 
     return player_choice
 
@@ -150,10 +161,13 @@ def game_condition(plays_made, counter):
     is_won = False
     for i in range(len(plays_made)):
         for j in range(len(plays_made)):
+            #checks for horizontal win
             if(plays_made[0][j] == counter and plays_made[1][j] == counter and plays_made[2][j] == counter):
                 is_won = True
+            #checks for column win
             elif(plays_made[i][0] == counter and plays_made[i][1] == counter and plays_made[i][2] == counter):
                 is_won = True
+            #checks for diagonal win
             elif(plays_made[0][0] == counter and plays_made[1][1] == counter and plays_made[2][2] == counter):
                 is_won = True
             elif(plays_made[2][0] == counter and plays_made[1][1] == counter and plays_made[0][2] == counter):
@@ -207,7 +221,7 @@ def main():
             print('It is a Cat Game, No One Won')
 
         which_player += 1
-        
+
     #asks the user if they want to play again    
     play_again()
 
