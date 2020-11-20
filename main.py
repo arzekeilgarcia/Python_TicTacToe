@@ -195,6 +195,24 @@ def play_again():
 
     return
 
+def best_move(plays_made):
+    """
+    Purpose:
+        
+    Use:
+        
+    -----------------------------------------------------
+    Parameters:
+        None
+    Returns:
+        None
+    """
+    # for i in range(3):
+    #     for j in range(3):
+    #         if(plays_made[i][j] != 'X' or plays_made[i][j] != 'O'):
+    #             plays_made[i][j] = 
+    return
+
 def main():
     #plays_made starts with values 1-9 as a way to show what's the original position of each box  
     plays_made = [[1,4,7],[2,5,8],[3,6,9]]
